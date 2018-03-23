@@ -1,0 +1,51 @@
+{
+    "name": "qubit/rabbit-bundle",
+    "description": "Qubit RabbitMQ Wrapper",
+    "type": "symfony-bundle",
+    "license": "WTFPL",
+    "authors": [
+        {
+            "name": "Sebastian Poliak",
+            "email": "spoliak@qubit.tv"
+        },
+        {
+            "name": "Daniel Carrizo",
+            "email": "dcarrizo@qubit.tv"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://repo-manager.qubit.tv/"
+        }
+    ],
+    "require": {
+        "symfony/http-kernel": "~2.7|~3.0|~4.0",
+        "symfony/config": "~2.7|~3.0|~4.0",
+        "symfony/dependency-injection": "~2.7|~3.0|~4.0",
+        "symfony/monolog-bundle": "~2.7|~3.0|~4.0",
+        "php-amqplib/rabbitmq-bundle": "^1.13",
+        "qubit/log-bundle": "dev-mvp"
+    },
+    "require-dev": {
+        "bruli/php-git-hooks": "~4.1"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "PhpGitHooks\\Infrastructure\\Composer\\ConfiguratorScript::buildConfig"
+        ],
+        "post-update-cmd": [
+            "PhpGitHooks\\Infrastructure\\Composer\\ConfiguratorScript::buildConfig"
+        ]
+    },
+    "autoload": {
+        "psr-4": { "Qubit\\Bundle\\QubitMqBundle\\": "" },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
+    },
+    "config": {
+        "secure-http": false,
+        "bin-dir": "bin"
+    }
+}

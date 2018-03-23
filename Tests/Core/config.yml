@@ -1,0 +1,40 @@
+services:
+    otroServicio:
+        class: 'Qubit\Bundle\QubitMqBundle\Tests\Services\SuccessServiceExample'
+    servicio1:
+        class: 'Qubit\Bundle\QubitMqBundle\Tests\Services\FailedServiceExample'
+
+qubit_mq:
+    sandbox: false
+    producer:
+        module: 'test' # nombre de modulo, va a ser univoco por la aplicacion que use el bundle
+    consumers:
+        queue:
+            name: 'testing' #'cola que va a rexibir mensajes' #UNA SOLA
+            handler:
+                - {name: test.login.user_logout, service: servicio1}
+                - {name: test.login.user_login, service: otroServicio}
+monolog:
+    channels:
+        - infotainment
+        - api
+    handlers:
+        main:
+            type: stream
+            path: '%kernel.logs_dir%/%kernel.environment%.log'
+            level: debug
+            channels: ['!event']
+            formatter: qubit.line.formatter
+
+#- armar la routing key a enviar a rabbit cuando sos un producer
+#- N por cada cola que va a revisar a que handler tiene que enviar el mensaje de a cuerdo a las keys:values configurados en consumer.queue
+#
+#- clase abstracta (event) que le inyectas el producer.module y definis las propiedades: componente, accion, tags y payload para que el implementador
+# setee las propiedades.
+# 
+# - servicio que envie contra rabbit el objeto de la clase message definida arriba con su payload y tags (opcionales) y la routing key generada por 
+#  si mismo
+
+# Si no se encuentra el handler para el evento mandar un log diciendo que estan mandando basura y retornar true para borrar el mensaje
+# Es tarea del handler, mandar un log si algo falla en el proceso y devolver un true o false en base al exito de la operación
+# METER ESTO ARRIBA EN EL README

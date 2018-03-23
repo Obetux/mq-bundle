@@ -1,0 +1,8 @@
+/vendor/
+.guard_coverage
+.DS_Store
+composer.lock
+nbproject/
+/bin/
+/Tests/Core/logs/
+/Tests/Core/cache/
